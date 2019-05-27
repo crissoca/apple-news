@@ -4,22 +4,22 @@
 	var started = false;
 
 	function done() {
-		$( '.bulk-export-submit' ).text( 'Done' ).attr('disabled','disabled');
+		$( '.bulk-delete-submit' ).text( 'Done' ).attr('disabled','disabled');
 	}
 
-	function pushItem( item, next, nonce ) {
+	function deleteItem( item, next, nonce ) {
 		var $item = $( item );
-		var $status = $item.find( '.bulk-export-list-item-status' );
+		var $status = $item.find( '.bulk-delete-list-item-status' );
 		var id = +$item.data( 'post-id' ); // fetch the post-id and cast to integer
 
-		$status.removeClass( 'pending' ).addClass( 'in-progress' ).text( 'Publishing...' );
+		$status.removeClass( 'pending' ).addClass( 'in-progress' ).text( 'Deleting...' );
 
 		// Send a GET request to ajaxurl, which is WordPress endpoint for AJAX
 		// requests. Expects JSON as response.
 		$.getJSON(
 			ajaxurl,
 			{
-				action: 'push_post',
+				action: 'delete_post',
 				id: id,
 				_ajax_nonce: nonce
 			},
@@ -38,25 +38,25 @@
 		);
 	}
 
-	function bulkPush() {
-		// Fetch all the li's that must be exported
-		var items = $( '.bulk-export-list-item' );
-		// The next function will push the next item in queue
+	function bulkDelete() {
+		// Fetch all the li's that must be deleted
+		var items = $( '.bulk-delete-list-item' );
+		// The next function will delete the next item in queue
 		var index = -1;
 		var next = function () {
 			index += 1;
 			if ( index < items.length ) {
-				pushItem( items.get( index ), next, $( '.bulk-export-list' ).data( 'nonce' ) );
+				deleteItem( items.get( index ), next, $( '.bulk-delete-list' ).data( 'nonce' ) );
 			} else {
 				done();
 			}
 		};
 
-		// Initial push
+		// Initial delete
 		next();
 	}
 
-	$('.bulk-export-submit').click(function (e) {
+	$('.bulk-delete-submit').click(function (e) {
 		e.preventDefault();
 
 		if ( started ) {
@@ -64,7 +64,7 @@
 		}
 
 		started = true;
-		bulkPush();
+		bulkDelete();
 	});
 
 })( jQuery, window );

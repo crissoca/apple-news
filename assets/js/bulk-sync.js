@@ -4,12 +4,12 @@
 	var started = false;
 
 	function done() {
-		$( '.bulk-export-submit' ).text( 'Done' ).attr('disabled','disabled');
+		$( '.bulk-sync-submit' ).text( 'Done' ).attr('disabled','disabled');
 	}
 
-	function pushItem( item, next, nonce ) {
+	function syncItem( item, next, nonce ) {
 		var $item = $( item );
-		var $status = $item.find( '.bulk-export-list-item-status' );
+		var $status = $item.find( '.bulk-sync-list-item-status' );
 		var id = +$item.data( 'post-id' ); // fetch the post-id and cast to integer
 
 		$status.removeClass( 'pending' ).addClass( 'in-progress' ).text( 'Publishing...' );
@@ -19,7 +19,7 @@
 		$.getJSON(
 			ajaxurl,
 			{
-				action: 'push_post',
+				action: 'sync_post',
 				id: id,
 				_ajax_nonce: nonce
 			},
@@ -38,25 +38,25 @@
 		);
 	}
 
-	function bulkPush() {
-		// Fetch all the li's that must be exported
-		var items = $( '.bulk-export-list-item' );
-		// The next function will push the next item in queue
+	function bulkSync() {
+		// Fetch all the li's that must be synced
+		var items = $( '.bulk-sync-list-item' );
+		// The next function will sync the next item in queue
 		var index = -1;
 		var next = function () {
 			index += 1;
 			if ( index < items.length ) {
-				pushItem( items.get( index ), next, $( '.bulk-export-list' ).data( 'nonce' ) );
+				syncItem( items.get( index ), next, $( '.bulk-sync-list' ).data( 'nonce' ) );
 			} else {
 				done();
 			}
 		};
 
-		// Initial push
+		// Initial sync
 		next();
 	}
 
-	$('.bulk-export-submit').click(function (e) {
+	$('.bulk-sync-submit').click(function (e) {
 		e.preventDefault();
 
 		if ( started ) {
@@ -64,7 +64,7 @@
 		}
 
 		started = true;
-		bulkPush();
+		bulkSync();
 	});
 
 })( jQuery, window );

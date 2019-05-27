@@ -293,6 +293,8 @@ class Admin_Apple_News_List_Table extends WP_List_Table {
 			'apple_news_bulk_actions',
 			array(
 				Admin_Apple_Index_Page::namespace_action( 'push' ) => __( 'Publish', 'apple-news' ),
+				Admin_Apple_Index_Page::namespace_action( 'sync' ) => __( 'Sync', 'apple-news' ),
+				Admin_Apple_Index_Page::namespace_action( 'delete' ) => __( 'Delete', 'apple-news' ),
 			)
 		);
 	}

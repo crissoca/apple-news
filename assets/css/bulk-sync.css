@@ -1,0 +1,40 @@
+.bulk-sync-list {
+  margin-bottom: 2em;
+  background-color: white;
+  border: 1px solid #e5e5e5;
+}
+
+.bulk-sync-list-item {
+  display: flex;
+  padding: 10px;
+  margin: 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.bulk-sync-list-item:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.bulk-sync-list-item:last-child {
+  border-bottom: none;
+}
+
+.bulk-sync-list-item-title {
+  flex-grow: 1;
+}
+
+.bulk-sync-list-item-status {
+  text-transform: uppercase;
+}
+
+.bulk-sync-list-item-status.in-progress {
+  font-weight: bold;
+}
+
+.bulk-sync-list-item-status.success {
+  color: green;
+}
+
+.bulk-sync-list-item-status.failed {
+  color: red;
+}

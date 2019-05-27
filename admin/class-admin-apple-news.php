@@ -12,6 +12,8 @@ require_once plugin_dir_path( __FILE__ ) . 'class-admin-apple-settings.php';
 require_once plugin_dir_path( __FILE__ ) . 'class-admin-apple-post-sync.php';
 require_once plugin_dir_path( __FILE__ ) . 'class-admin-apple-index-page.php';
 require_once plugin_dir_path( __FILE__ ) . 'class-admin-apple-bulk-export-page.php';
+require_once plugin_dir_path( __FILE__ ) . 'class-admin-apple-bulk-delete-page.php';
+require_once plugin_dir_path( __FILE__ ) . 'class-admin-apple-bulk-sync-page.php';
 require_once plugin_dir_path( __FILE__ ) . 'class-admin-apple-notice.php';
 require_once plugin_dir_path( __FILE__ ) . 'class-admin-apple-meta-boxes.php';
 require_once plugin_dir_path( __FILE__ ) . 'class-admin-apple-async.php';
@@ -58,6 +60,12 @@ class Admin_Apple_News extends Apple_News {
 
 		// Set up all sub pages.
 		new Admin_Apple_Bulk_Export_Page( self::$settings );
+
+		// Set up all sub pages.
+		new Admin_Apple_Bulk_Delete_Page( self::$settings );
+
+		// Set up all sub pages.
+		new Admin_Apple_Bulk_Sync_Page( self::$settings );
 
 		// Set up posts syncing if enabled in the settings.
 		new Admin_Apple_Post_Sync( self::$settings );

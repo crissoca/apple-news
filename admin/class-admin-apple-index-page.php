@@ -140,8 +140,25 @@ class Admin_Apple_Index_Page extends Apple_News {
 		switch ( $action ) {
 			case self::namespace_action( 'export' ):
 				return $this->export_action( $id );
+				break;
 			case self::namespace_action( 'reset' ):
 				return $this->reset_action( $id );
+				break;
+			case self::namespace_action( 'sync' ): // phpcs:ignore PSR2.ControlStructures.SwitchDeclaration.TerminatingComment
+				if ( ! $id ) {
+					$url = menu_page_url( $this->plugin_slug . '_bulk_sync', false );
+					if ( isset( $_GET['article'] ) ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+						$ids  = is_array( $_GET['article'] ) ? array_map( 'absint', $_GET['article'] ) : absint( $_GET['article'] ); //  phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+						$url .= '&ids=' . implode( '.', $ids );
+					}
+					wp_safe_redirect( esc_url_raw( $url ) );
+					if ( ! defined( 'APPLE_NEWS_UNIT_TESTS' ) || ! APPLE_NEWS_UNIT_TESTS ) {
+						exit;
+					}
+				} else {
+					return $this->push_action( $id );
+				}
+				break;
 			case self::namespace_action( 'push' ): // phpcs:ignore PSR2.ControlStructures.SwitchDeclaration.TerminatingComment
 				if ( ! $id ) {
 					$url = menu_page_url( $this->plugin_slug . '_bulk_export', false );
@@ -156,8 +173,22 @@ class Admin_Apple_Index_Page extends Apple_News {
 				} else {
 					return $this->push_action( $id );
 				}
+				break;
 			case self::namespace_action( 'delete' ):
-				return $this->delete_action( $id );
+				if ( ! $id ) {
+					$url = menu_page_url( $this->plugin_slug . '_bulk_delete', false );
+					if ( isset( $_GET['article'] ) ) { // phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+						$ids  = is_array( $_GET['article'] ) ? array_map( 'absint', $_GET['article'] ) : absint( $_GET['article'] ); //  phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected
+						$url .= '&ids=' . implode( '.', $ids );
+					}
+					wp_safe_redirect( esc_url_raw( $url ) );
+					if ( ! defined( 'APPLE_NEWS_UNIT_TESTS' ) || ! APPLE_NEWS_UNIT_TESTS ) {
+						exit;
+					}
+				} else {
+					return $this->delete_action( $id );
+				}
+				break;
 		}
 	}
 
