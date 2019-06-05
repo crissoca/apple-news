@@ -295,6 +295,10 @@ class Request {
 				}
 
 				// Add the code, message and keyPath.
+				if ( ! isset( $error->message ) ) {
+					$error->message = '';
+				}
+
 				$messages[] = sprintf(
 					'%s%s%s%s',
 					$error->code,
